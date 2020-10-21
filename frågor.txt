@@ -1,0 +1,75 @@
+1.När använder man add respektive commit?
+Git add lägger till filen i git-index och gör så att git börjar hålla koll 
+på filen. Man lägger alltså till filen i staging area och gör den redo för 
+commit. När man använder commit så läggs filen till i repository och visar 
+sig som en commit i historiken. Commit betecknar att en förändring har skett 
+i ditt repository.  
+
+2. Vad är pull repektive push?
+Pull hämtar data från ett remote repository och mergar det med ditt lokala 
+repository. Push uppdaterar ett remote repository med dina lokala commits.
+
+3. När använder man log respektive status?
+Log visar commit historiken i den branchen du befinner dig i (senaste commit 
+överst i listan). Alltså när man vill se vilka ändringar som har gjorts i 
+ditt repository. Git status visar på vilken branch du befinner dig i och vilka 
+filer som finns i staging area och som är redo att commit. Man ser också 
+filer om de inte är ”add”. 
+
+4.Hur kan man formulera sig i sina commit-meddelanden?
+Formulera sig kortfattat och så tydligt som möjligt. Tex ”Adding Main” om 
+man lägger till en Main.java till ett projekt. Man ska alltså kunna veta vad 
+förändringen innebar genom commit meddelandet så att det blir lätt att gå 
+tillbaka i log historiken om en commit inte fungerar som det ska. 
+
+5.Spara filen, lägg till den i repot, committa, pusha.
+touch file.txt
+git add  file.txt
+git commit -m ”Adding file.txt” 
+git add -am  ”Adding file.txt”
+git push -u origin master (om man vill pusha upp den till ett remote repository 
+i master branch och om man har satt en git remote add origin <url>
+
+6.Det finns flera sätt att rulla tillbaka koden till ett tidigare tillstånd. 
+Förklara skillnaden och motivera när man skulle använda den ena eller andra 
+metoden. Ge gärna exempel på de kommandon du använder för att göra detta 
+och vissa att det fungerar, vilken output du fick från git-kommandona.
+
+Det finns tre vanliga sätt att rulla tillbaka koden till ett tidigare 
+tillstånd reset, revert, rebase. Nedan följer en kort förklaring av varje 
+tillvägagångssätt:
+
+Reset:
+Det finns två sätt att använda reset:
+git reset current~2(reset till två tidigare commits, 2 står för hur många 
+steg man vill backa)
+git reset 4503b86 (de sju första siffrorna till en commit) git -log för att 
+ta reda på commit numret. Man ”reset” sin branch till den commit som man 
+har angett med numren. Reset tar också bort historiken på de commits man har 
+gjort efter sin reset punkt. 
+
+Det finns också 3 typer av reset hard, soft, mixed. Dessa tre typer av reset 
+bestämmer hur du vill gå tillbaka i din lokalamiljö (local environment). 
+Hard reset skriver över både staging area och working area från commit 
+punkten. Soft går bara tillbaka i ditt repository och lämnar staging area och 
+working area oförändrat. Mixed går tillbaka i ditt repository och staging 
+area men lämnar working area oförändrat.
+
+Revert:
+git revert <hashcode> eller HEAD
+git revert skiljer sig lite med reset för den går nämligen inte tillbaka i 
+commit historiken utan visar sig som en ny commit och tar bort effekten av 
+commiten du vill utesluta. Git revert är bra när man arbetar i ett repository 
+med flera användare då det kan innebära svårigheter för andra när du har 
+ändrat historiken. Andra som arbetar i samma remote repository kan behöva 
+merga in sina commits igen och det kan innebära mycket extra jobb.       
+
+Rebase:
+git rebase master
+Man kan säga att rebase är ett sätt att merga två barnches med historik. 
+Till exempel man har en master branch och en feature branch. Master branch 
+innehåller 123 och feature 1245 och efter rebase skulle det vara 12345 i 
+master. Om man inte vill behålla den ändringen kan man alltid gör git reset 
+(hashcode) för att rulla tillbaka till ursprungsläget. Bra att använda om 
+man kanske vill testa hur en viss implementation fungerar i hela koden.
+
